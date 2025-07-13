@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MONESE</title>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Comic Sans MS', 'Verdana', sans-serif;
+            background-color: #fff5f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #title {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 36px;
+            color: #4a2e2b;
+            text-align: center;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        #results {
+            background-color: white;
+            border: 2px solid #4a2e2b;
+            border-radius: 20px;
+            width: 80%;
+            max-width: 400px;
+            padding: 30px 20px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            float: left;
+            width: 60%;
+        }
+
+        #next-button {
+            margin-top: 20px;
+            background-color: #a3d3f7;
+            border: 2px solid #2980b9;
+            color: #1a3d5d;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        #word {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4a2e2b;
+            margin-bottom: 5px;
+        }
+
+        #type {
+            font-size: 18px;
+            color: #944b28;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        #definition {
+            font-size: 16px;
+            margin: 10px 0;
+            color: #333;
+        }
+
+        #example {
+            font-size: 14px;
+            margin: 10px 0;
+            font-style: italic;
+            color: #555;
+        }
+
+        #listDef {
+            float: right;
+            width: 35%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        #word-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        #word-list li {
+            color: #2196f3;
+            cursor: pointer;
+            margin-bottom: 8px;
+        }
+
+        nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #fff5f0;
+            padding: 15px 0;
+            border-bottom: 2px solid #4a2e2b;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: space-around;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            font-family: 'Comic Sans MS', 'Verdana', sans-serif;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #4a2e2b;
+            font-weight: bold;
+            font-size: 16px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .five-pointed-star {
+            --star-color: orange;
+            margin: 0 0.14em;
+            font-size: 2.1em;
+            position: relative;
+            display: inline-block;
+            width: 0;
+            height: 0;
+            border-right: 0.21em solid transparent;
+            border-bottom: 0.154em solid var(--star-color);
+            border-left: 0.21em solid transparent;
+            transform: rotate(35deg);
+            vertical-align: middle;
+        }
+
+        .five-pointed-star:before {
+            border-bottom: 0.168em solid var(--star-color);
+            border-left: 0.063em solid transparent;
+            border-right: 0.063em solid transparent;
+            position: absolute;
+            height: 0;
+            width: 0;
+            top: -0.098em;
+            left: -0.136em;
+            display: block;
+            content: "";
+            transform: rotate(-35deg);
+        }
+
+        .five-pointed-star:after {
+            position: absolute;
+            display: block;
+            top: 0.006em;
+            left: -0.224em;
+            width: 0;
+            height: 0;
+            border-right: 0.21em solid transparent;
+            border-bottom: 0.154em solid var(--star-color);
+            border-left: 0.21em solid transparent;
+            transform: rotate(-70deg);
+            content: "";
+        }
+
+        #next-button {
+            font-size: 18px;
+        }
+
+        #favorisbutton {
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <a href="/">
+        <div id="title">WORD_TITLE</div>
+    </a>
+    <div id="results">
+        <p id="word">WORD_NAME</p>
+        <p id="type">WORD_GENDER</p>
+        <div id="difficulty">
+            <div class="five-pointed-star"></div>
+        </div>
+        <p id="definition">WORD_DEFINITION</p>
+        <p id="example">WORD_EXAMPLE</p>
+        <button id="next-button" onclick="window.location.href='/random/generate'">
+            J'en veux un autre !
+        </button>
+
+        <div id="fav" style="padding-top: 10px;">
+            <button id="favorisbutton" onclick="ajouterFavoris()">Ajouter à mes favoris</button>
+        </div>
+    </div>
+
+    <nav>
+        <ul>
+            <li>
+                <a href="/">Accueil</a>
+            </li>
+            <li>
+                <a href="/favoris/list">Favoris</a>
+            </li>
+            <li>
+                <a href="/word/list">Mots</a>
+            </li>
+            <li>
+                <a href="/user/profile">Profile</a>
+            </li>
+        </ul>
+    </nav>
+
+    <script>
+        function ajouterFavoris() {
+            const mot = document.getElementById('word').textContent;
+            let favoris = JSON.parse(localStorage.getItem('favorisMots') || '[]');
+            if (!favoris.includes(mot)) {
+                favoris.push(mot);
+                localStorage.setItem('favorisMots', JSON.stringify(favoris));
+                alert(`Le mot "${mot}" a été ajouté à vos favoris !`);
+                updateStats(mot);
+                updateMatches(mot);
+            } else {
+                alert(`Le mot "${mot}" est déjà dans vos favoris.`);
+            }
+        }
+
+        function updateStats(word) {
+            fetch('/stats/update', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ word, delta: 1 })
+            });
+        }
+
+        function updateMatches(word) {
+            const username = localStorage.getItem('username');
+            if (username) {
+                console.log('update matches');
+
+                fetch('/matches/username', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ word, username })
+                })
+            }
+        }
+    </script>
+</body>
+
+</html>

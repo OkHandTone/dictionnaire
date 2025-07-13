@@ -1,0 +1,9 @@
+services:
+  monese:
+    build: .
+    ports:
+      - "3000:3000"
+    container_name: monese
+    volumes:
+      - ./data:/usr/src/app/data
+    restart: always

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Comic Sans MS', 'Verdana', sans-serif;
+            background-color: #fff5f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #4a2e2b;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #fff5f0;
+            padding: 15px 0;
+            border-bottom: 2px solid #4a2e2b;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: space-around;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            font-family: 'Comic Sans MS', 'Verdana', sans-serif;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: #4a2e2b;
+            font-weight: bold;
+            font-size: 16px;
+            padding: 8px 12px;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+        }
+
+        button {
+            font-size: 18px;
+        }
+
+        input {
+            font-size: 18px;
+            width: 100%;
+        }
+
+        .container {
+            background-color: white;
+            border: 2px solid #4a2e2b;
+            border-radius: 20px;
+            width: 80%;
+            max-width: 400px;
+            padding: 30px 20px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        button {
+            margin-top: 20px;
+            background-color: #a3d3f7;
+            border: 2px solid #2980b9;
+            color: #1a3d5d;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Votre profil</h1>
+        <div>
+            <p>Entrez un nom d'utilisateur ou une adresse email (optionnel) : </p>
+            <input type="text" id="username">
+
+            <button onclick="saveProfile()">Enregistrer</button>
+        </div>
+    </div>
+
+    <nav>
+        <ul>
+            <li>
+                <a href="/">Accueil</a>
+            </li>
+            <li>
+                <a href="/favoris/list">Favoris</a>
+            </li>
+            <li>
+                <a href="/word/list">Mots</a>
+            </li>
+            <li>
+                <a href="/user/profile">Profil</a>
+            </li>
+        </ul>
+    </nav>
+
+    <script>
+        const username = localStorage.getItem('username');
+        if (username) {
+            document.getElementById('username').value = username;
+        }
+
+        function saveProfile() {
+            localStorage.setItem('username', document.getElementById('username').value);
+            alert('Profile saved');
+        }
+    </script>
+</body>
+
+</html>

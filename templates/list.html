@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monèse</title>
+  <link rel="stylesheet" href="./list.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', 'Verdana', sans-serif;
+      background-color: #fff5f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #title {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 36px;
+      color: #4a2e2b;
+      text-align: center;
+      margin-bottom: 20px;
+      font-weight: bold;
+    }
+
+    #container {
+      width: 100vw;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #results {
+      background-color: white;
+      border: 2px solid #4a2e2b;
+      border-radius: 20px;
+      width: 80%;
+      max-width: 400px;
+      padding: 30px 20px;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    #word-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      max-height: 60vh;
+      overflow-y: auto;
+    }
+
+    #word-list li {
+      color: #2196f3;
+      font-size: 18px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    #word-list li:hover {
+      color: #1565c0;
+      text-decoration: underline;
+    }
+
+    nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #fff5f0;
+      padding: 15px 0;
+      border-bottom: 2px solid #4a2e2b;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: space-around;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      font-family: 'Comic Sans MS', 'Verdana', sans-serif;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #4a2e2b;
+      font-weight: bold;
+      font-size: 16px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      transition: background-color 0.3s;
+    }
+
+    #word-list {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    #word-list li {
+      margin-bottom: 10px;
+    }
+
+    #word-list li a {
+      text-decoration: none;
+      color: #4a2e2b;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="title">Monèse</div>
+  <div id="container">
+    <div id="results">
+      <ul id="word-list">
+        WORD_LIST
+      </ul>
+    </div>
+  </div>
+  <nav>
+    <ul>
+      <li>
+        <a href="/">Accueil</a>
+      </li>
+      <li>
+        <a href="/favoris/list">Favoris</a>
+      </li>
+      <li>
+        <a href="/word/list">Mots</a>
+      </li>
+      <li>
+        <a href="/user/profile">Profile</a>
+      </li>
+    </ul>
+  </nav>
+</body>
+
+</html>

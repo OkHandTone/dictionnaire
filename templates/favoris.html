@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Favoris</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', 'Verdana', sans-serif;
+      background-color: #fff5f0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #favoris-container {
+      background-color: white;
+      border: 2px solid #4a2e2b;
+      border-radius: 20px;
+      width: 80%;
+      max-width: 400px;
+      padding: 30px 20px;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    #favoris-title {
+      font-size: 32px;
+      color: #4a2e2b;
+      font-weight: bold;
+      margin-bottom: 20px;
+      margin-top: 0;
+    }
+
+    #liste-favoris {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    #liste-favoris li {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    #liste-favoris a {
+      text-decoration: none;
+      color: #2196f3;
+      font-weight: bold;
+      font-size: 18px;
+      border-radius: 8px;
+      padding: 6px 12px;
+      transition: background-color 0.2s;
+    }
+
+    #liste-favoris a:hover {
+      background-color: #a3d3f7;
+    }
+
+    nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background-color: #fff5f0;
+      padding: 15px 0;
+      border-bottom: 2px solid #4a2e2b;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    nav ul {
+      display: flex;
+      justify-content: space-around;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      font-family: 'Comic Sans MS', 'Verdana', sans-serif;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #4a2e2b;
+      font-weight: bold;
+      font-size: 16px;
+      padding: 8px 12px;
+      border-radius: 10px;
+      transition: background-color 0.3s;
+    }
+
+    nav a:hover {
+      background-color: #a3d3f7;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="favoris-container">
+    <h2 id="favoris-title">Mes favoris</h2>
+    <ul id="liste-favoris"></ul>
+  </div>
+
+
+  <nav>
+    <ul>
+      <li>
+        <a href="/">Accueil</a>
+      </li>
+      <li>
+        <a href="/favoris/list">Favoris</a>
+      </li>
+      <li>
+        <a href="/word/list">Mots</a>
+      </li>
+      <li>
+        <a href="/user/profile">Profile</a>
+      </li>
+    </ul>
+  </nav>
+
+  <script>
+    function deleteFavouriteWord(mot) {
+      let favoris = JSON.parse(localStorage.getItem('favorisMots') || '[]');
+      favoris = favoris.filter(f => f !== mot);
+      localStorage.setItem('favorisMots', JSON.stringify(favoris));
+      showFavouriteWords();
+      fetch('/stats/update', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ word: mot, delta: -1 })
+      });
+    }
+
+    function showFavouriteWords() {
+      const favoris = JSON.parse(localStorage.getItem('favorisMots') || '[]');
+      const ul = document.getElementById('liste-favoris');
+      ul.innerHTML = '';
+      if (favoris.length === 0) {
+        ul.innerHTML = "<li>Aucun favori enregistré.</li>";
+      } else {
+        favoris.forEach(mot => {
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = '/' + encodeURIComponent(mot);
+          a.textContent = mot;
+          li.appendChild(a);
+          addWordMatches(mot, li);
+
+          const btn = document.createElement('button');
+          btn.textContent = 'X';
+          btn.style.fontSize = '12px';
+          btn.style.marginRight = '10px';
+          btn.style.cursor = 'pointer';
+          btn.onclick = () => { deleteFavouriteWord(mot); updateMatches(mot); }
+          li.appendChild(btn);
+          li.appendChild(a);
+          ul.appendChild(li);
+        });
+      }
+    }
+
+    function addWordMatches(word, li) {
+      fetch(`/matches/list?word=${word}`)
+        .then(response => response.json())
+        .then(data => {
+          const matchDiv = document.createElement('div');
+          matchDiv.style.display = 'flex';
+          matchDiv.style.fontSize = '12px';
+          for (const match of data.matches) {
+            if (match === localStorage.getItem('username')) {
+              continue;
+            }
+            matchDiv.innerHTML += `♥ ${match}<br>`;
+          }
+          li.appendChild(matchDiv);
+        });
+    }
+
+    function updateMatches(word) {
+      const username = localStorage.getItem('username');
+      if (username) {
+        fetch('/matches/username', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ word, username })
+        });
+      }
+    }
+
+    showFavouriteWords();
+  </script>
+</body>
+
+</html>
